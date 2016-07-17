@@ -127,8 +127,9 @@ class UIHandler {
 
     var promptInput = promptBox.querySelector('#password-input');
     promptInput.value = '';
+    var errorMessage = promptBox.querySelector('#error-message');
+    errorMessage.innerText = '';
     if (validationError) {
-      var errorMessage = promptBox.querySelector('#error-message');
       errorMessage.innerText = validationError;
     }
     var promptMessage = promptBox.querySelector('span');

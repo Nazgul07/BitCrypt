@@ -67,9 +67,6 @@ app.on('activate', () => {
 
 const fs = require('fs'),
   crypto = require('crypto');
-  temp = require("./tmp");
-
-temp.setGracefulCleanup();
 
 var finishedCount = 0;
 var fileCount = 0;
@@ -108,10 +105,12 @@ function lock(files, event) {
       continue;
     }
     var cipher = crypto.createCipher('aes-256-cbc', lockPassword),
+      passwordCipher = crypto.createCipher('aes-256-cbc', lockPassword),
       headerCipher = crypto.createCipher('aes-256-cbc', 'headerKey'),
       input = fs.createReadStream(file.path),
       output = fs.createWriteStream(destination);
     output.write(headerCipher.update(lockPasswordHint, 'utf8', 'binary') + headerCipher.final('binary') + '\n\n');
+    output.write(passwordCipher.update(lockPasswordHint, 'utf8', 'binary') + passwordCipher.final('binary') + '\n\n');
     input.pipe(cipher).pipe(output);
 
     var progressShown = false;
@@ -142,25 +141,24 @@ function unLock(files, event) {
   }
   else {
     var cipher = crypto.createDecipher('aes-256-cbc', file.password),
+      passwordCipher = crypto.createDecipher('aes-256-cbc', file.password),
       headerCipher = crypto.createDecipher('aes-256-cbc', 'headerKey'),
       input = fs.createReadStream(file.path);
      
     
     parseHeader(input, function (error, header, stream) {
       if(error) event.sender.send('message', 'An error occured.');
-      var realHeader = headerCipher.update(header, 'binary', 'utf8') + headerCipher.final('utf8');
-      var errorHandler = function (err) {
-        stream.close();
-        fs.unlink(tempFile);
-        files.push(file);
-        event.sender.send('get-unlock-password', files[files.length - 1].name, realHeader, "Password invalid.");
-        return;
-      }
-      var tempFile = temp.tmpNameSync();
-      var output = fs.createWriteStream(tempFile);
-      var sentConfirm = false;
-      var progressShown = false;
-      stream.on('data', function (){
+      var hintHeader = headerCipher.update(header, 'binary', 'utf8') + headerCipher.final('utf8');
+      parseHeader(input, function (error, header, stream) {
+        if(error) event.sender.send('message', 'An error occured.');
+        var errorHandler = function() {
+          stream.close();
+          files.push(file);
+          event.sender.send('get-unlock-password', files[files.length - 1].name, hintHeader, "Password invalid.");
+          return;
+        }
+
+        var finishUnlocking = function () {
           if(fs.existsSync(destination) && !confirmed && !sentConfirm){
             files.push(file);
             event.sender.send('confirm', "File '" + destination +"' already exists, do you want to overwrite it?");
@@ -169,22 +167,45 @@ function unLock(files, event) {
             sentConfirm = true;
             return;
           }
-          else if(!progressShown){
-            progressShown = true;
-            event.sender.send('show-progress');
-          }
-      });
-      output.on('finish', function () {
-        if(deleteWhenDone){
-          fs.unlink(file.path);
+          var output = fs.createWriteStream(destination);
+          var sentConfirm = false;
+          var progressShown = false;
+          stream.on('data', function (chunk){
+              if(!progressShown){
+                progressShown = true;
+                event.sender.send('show-progress');
+              }
+          });
+          output.on('finish', function () {
+            if(deleteWhenDone){
+              fs.unlink(file.path);
+            }
+            event.sender.send('progress-update', ++finishedCount / fileCount);
+            confirmed = false;
+          });
+          stream.pipe(cipher).on('error', errorHandler).pipe(output);
         }
-        confirmed = false;
-        fs.rename(tempFile, destination, function() {
-          event.sender.send('progress-update', ++finishedCount / fileCount);
-        });
-      });
-      
-      stream.pipe(cipher).on('error', errorHandler).pipe(output);
+
+        if(header != null){//the file is the new version with the password verify header
+          try{
+            var passwordVerifyHeader = passwordCipher.on('error', errorHandler).update(header, 'binary', 'utf8') + passwordCipher.final('utf8');
+            finishUnlocking();
+          }
+          catch(e){
+            errorHandler();
+            return;
+          }
+        }
+        else {
+          //the file is an old version, and we need to reset the stream, stream.unshift doesn't seem to work.
+          stream.close();
+          stream = fs.createReadStream(file.path);
+          parseHeader(stream, function (error, header, stream) {
+            finishUnlocking();
+          });
+        }
+
+      }, true);
     });
   }
   if (files.length > 0) {
@@ -241,14 +262,18 @@ function checkNextFile(event) {
 
 
 const StringDecoder = require('string_decoder').StringDecoder;
-function parseHeader(stream, callback) {
-  stream.on('error', callback);
-  stream.on('readable', onReadable);
+function parseHeader(stream, callback, alreadyReading) {
   const decoder = new StringDecoder('utf8');
   var header = '';
+  stream.on('error', callback);
+  if(!alreadyReading)
+    stream.on('readable', onReadable);
+  else 
+    onReadable();
   function onReadable() {
     var chunk;
-    while (null !== (chunk = stream.read(1))) {
+    var count = 0;
+    while ((!alreadyReading || ++count < 500) && null !== (chunk = stream.read(1))) {
       var str = decoder.write(chunk);
       if ((header + str).match(/\n\n/)) {
         // found the header boundary
@@ -261,6 +286,9 @@ function parseHeader(stream, callback) {
         // still reading the header.
         header += str;
       }
+    }
+    if(count == 500){
+      callback(null, null, stream);
     }
   }
 }
