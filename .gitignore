@@ -48,3 +48,5 @@ Temporary Items
 BitCryptSetup.iss
 *.exe
 *.cer
+SignExe.bat
+SignInstaller.bat
