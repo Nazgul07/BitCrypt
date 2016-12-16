@@ -84,20 +84,24 @@ prompt-box form {
   width: 70%;
   background: white;
   z-index: 5;
-  box-shadow: 0px 1px 1px 1px #888888;
 /*
+  box-shadow: 0px 1px 1px 1px #888888;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
 */
   margin: auto;
-  padding: 5px;
+  padding: 0.5em;
+  border-radius: 3px;
   overflow-y: auto;
 /*  max-height: 125px;*/
 }
 prompt-box#unlock-prompt form {
 /*  max-height: 90px;*/
+}
+.mb05em {
+  margin-bottom: 0.5em;
 }
 prompt-box input {
   width: 100%;
@@ -125,7 +129,7 @@ prompt-box button {
   color: white;
   text-align: center;
   text-decoration: none;
-  padding: 5px;
+  padding: 6px 9px;
   float: right;
   border-radius: 2px;
   cursor: pointer;
@@ -224,7 +228,10 @@ input.cmn-toggle-round + label:before {
   transition: background 0.4s;
 }
 input.cmn-toggle-round + label:after {
-  width: 14px;
+  width: 15px;
+  height: 15px;
+  margin-top: -1px;
+  margin-left: -1px;
   background-color: #fff;
   border-radius: 100%;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);

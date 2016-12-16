@@ -136,6 +136,7 @@ class UIHandler {
     var promptMessage = promptBox.querySelector('span');
     promptMessage.innerText = message;
     var hintMessage = promptBox.querySelector('#password-hint');
+    hint = hint ? hint : "";
     hintMessage.innerText = "Hint: " + hint;
     var form = promptBox.querySelector('form');
     form.onsubmit = function () {

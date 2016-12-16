@@ -19,9 +19,9 @@
     </main-area>
     <prompt-box id="unlock-prompt">
       <form>
-        <div class="prompt-title"></div>
-        <input required id="password-input" name="password-input" type="password" placeholder="password"/>
-        <span id="error-message"></span>
+        <div class="prompt-title mb05em"></div>
+        <input required id="password-input" name="password-input" type="password" placeholder="password" class="mb05em"/>
+        <span id="error-message" class="mb05em"></span>
         <button id="password-button-ok" type="submit">OK</button>
         <button id="password-button-cancel" type="button">Cancel</button>
         <span id="password-hint"></span>
@@ -29,13 +29,13 @@
     </prompt-box>
     <prompt-box id="lock-prompt">
       <form>
-        <div class="prompt-title"></div>
-        <div class="input-col">
+        <div class="prompt-title mb05em"></div>
+        <div class="input-col mb05em">
           <input required id="password-input" name="password-input" type="password" placeholder="password"/>
           <input required id="confirm-input" name="confirm-input" type="password" placeholder="confirm"/>
         </div>
-        <div>Please enter a password hint:</div>
-        <input required id="hint-input" name="hint-input" type="text"/>
+        <div class="mb05em">Please enter a password hint:</div>
+        <input required id="hint-input" name="hint-input" type="text" class="mb05em"/>
         <button id="password-button-ok" type="submit">OK</button>
         <button id="password-button-cancel" type="button">Cancel</button>
       </form>
