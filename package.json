@@ -1,5 +1,11 @@
 {
   "name": "bitcrypt",
-  "version": "0.0.2",
-  "main": "server/main.js"
+  "version": "0.0.3",
+  "main": "server/main.js",
+  "devDependencies": {
+    "electron": "^1.4.12"
+  },
+  "scripts": {
+    "start": "electron ."
+  }
 }

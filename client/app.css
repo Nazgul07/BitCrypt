@@ -4,18 +4,18 @@ html, body{
   margin: 0;
   padding: 0;
   overflow: hidden;
-  font-family: Segoe UI;
+  font-family: Segoe UI, Helvetica, Verdana, sans-serif;
   border-bottom-right-radius: 25px;
   border-bottom-left-radius: 25px;
   color:#8a8a8a;
   cursor: default !important;
 }
 main-area {
-  position: absolute;
+  position: relative;
+  display: flex;
   background: white;
   margin: 0 auto;
-  height: 100%;
-  width: 100%;
+  width: 362px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
@@ -23,10 +23,8 @@ drop-zone {
   position: relative;
   border-radius: 25px;
   border: dashed 3px #cccccc;
-  float: left;
   height: 150px;
   width: 170px;
-  margin-left: 10px;
   display: block;
   background-color: #eeeeee;
   background-image: url('images/Lock-Light.png');
@@ -36,6 +34,9 @@ drop-zone {
   text-align: center;
   font-size: .6em;
   cursor: pointer !important;
+}
+drop-zone:not(:first-child) {
+  margin-left: 10px;
 }
 drop-zone:hover, .dragging{
   border: dashed 3px #848484;
@@ -49,17 +50,32 @@ drop-zone#unlock-zone:hover, drop-zone#unlock-zone.dragging {
   background-image: url('images/UnLock-Dark.png');
 }
 prompt-box {
+  position: absolute;
   display: none;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+prompt-box form {
+  display: block;
   position: fixed;
   width: 70%;
   background: white;
   z-index: 5;
   box-shadow: 0px 1px 1px 1px #888888;
-  left: 15%;
-  top: 10px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
   padding: 5px;
   overflow-y: auto;
-  max-height: 150px;
+  max-height: 125px;
+}
+prompt-box#unlock-prompt form {
+  max-height: 90px;
 }
 prompt-box input {
   width: 98%;
@@ -77,6 +93,7 @@ prompt-box button {
   padding: 5px;
   float: right;
   border-radius: 2px;
+  cursor: pointer;
 }
 prompt-box button#password-button-cancel {
   background-color: #de5864;
@@ -94,7 +111,7 @@ prompt-box #error-message {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 20px;  
+  height: 10px;  
   background: #d4d4d4;
   display: none;
 }
@@ -122,15 +139,18 @@ prompt-box #error-message {
   animation: animate-stripes 3s linear infinite;             
 }
 .switch {
-  position: relative;
-  margin: 0 auto;
+  position: absolute;
+  bottom: -30px;
+  right: 0;
+  left: 0;
   width: 38px;
-  top: 150px;
+  margin: 0 auto;
 }
 .switch span {
   position: absolute;
   left: -30px;
   width: 100px;
+  margin-top: 5px;
   font-size: .7em;
 }
 .cmn-toggle {

@@ -1,4 +1,5 @@
 const electron = require('electron');
+const os = require('os');
 // Module to control application life.
 const {app} = electron;
 // Module to create native browser window.
@@ -11,10 +12,10 @@ let win;
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    height: 225,
+    height: 245,
     resizable: false,
     width: 400,
-    transparent: true
+    transparent: os.platform == 'win32' ? true : false,
   });
 
   win.webContents.on('will-navigate', function (event) {
@@ -44,11 +45,7 @@ app.on('ready', createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  app.quit();
 });
 
 app.on('activate', () => {
