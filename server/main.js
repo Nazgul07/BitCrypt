@@ -16,6 +16,8 @@ function createWindow() {
     resizable: false,
     width: 400,
     transparent: os.platform == 'win32' ? true : false,
+    icon: __dirname + '/../client/images/UnLock-Dark.png',
+    titleBarStyle: os.platform == 'win32' ? 'default' : 'hidden',
   });
 
   win.webContents.on('will-navigate', function (event) {
