@@ -12,7 +12,7 @@ let win;
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    height: 225,
+    height: 245,
     resizable: false,
     width: 400,
     transparent: os.platform == 'win32' ? true : false,
