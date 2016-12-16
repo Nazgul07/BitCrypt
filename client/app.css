@@ -33,7 +33,7 @@ main-area {
   display: flex;
   background: white;
   margin: 0 auto;
-  width: 362px;
+  width: 90%;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
@@ -178,18 +178,17 @@ prompt-box #error-message {
   animation: animate-stripes 3s linear infinite;             
 }
 .switch {
-  position: absolute;
-  bottom: -30px;
+  position: relative;
   right: 0;
   left: 0;
-  width: 38px;
+  top: -5px;
+  width: 30px;
   margin: 0 auto;
 }
 .switch span {
   position: absolute;
   left: -30px;
   width: 100px;
-  margin-top: 5px;
   font-size: .7em;
 }
 .cmn-toggle {

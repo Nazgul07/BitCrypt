@@ -15,9 +15,9 @@ function createWindow() {
     height: 245,
     resizable: false,
     width: 400,
-    transparent: os.platform == 'win32' ? true : false,
-    icon: __dirname + '/../client/images/UnLock-Dark.png',
-    titleBarStyle: os.platform == 'win32' ? 'default' : 'hidden',
+    transparent: os.platform() == 'win32' ? true : false,
+    icon: __dirname + '/../client/images/BitCrypt.ico',
+    titleBarStyle: os.platform() == 'win32' ? 'default' : 'hidden',
   });
 
   win.webContents.on('will-navigate', function (event) {
