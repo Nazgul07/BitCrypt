@@ -1,4 +1,5 @@
 const {ipcRenderer} = require('electron');
+const os = require('os');
 const FileSystem = require('fs');
 const remote = require('electron').remote
 const Path = require('path');
@@ -123,7 +124,7 @@ class UIHandler {
 
   promptForUnlock(message, hint, callback, validationError) {
     var promptBox = document.querySelector('#unlock-prompt');
-    promptBox.style.display = 'block';
+    promptBox.style.display = 'flex';
 
     var promptInput = promptBox.querySelector('#password-input');
     promptInput.value = '';
@@ -135,6 +136,7 @@ class UIHandler {
     var promptMessage = promptBox.querySelector('span');
     promptMessage.innerText = message;
     var hintMessage = promptBox.querySelector('#password-hint');
+    hint = hint ? hint : "";
     hintMessage.innerText = "Hint: " + hint;
     var form = promptBox.querySelector('form');
     form.onsubmit = function () {
@@ -150,7 +152,7 @@ class UIHandler {
 
   promptForLock(message, callback, validationError) {
     var promptBox = document.querySelector('#lock-prompt');
-    promptBox.style.display = 'block';
+    promptBox.style.display = 'flex';
 
     var promptInput = promptBox.querySelector('#password-input');
     promptInput.value = '';
@@ -175,8 +177,9 @@ class UIHandler {
       var errorMessage = promptBox.querySelector('#error-message');
       errorMessage.innerText = validationError;
     }
-    var promptMessage = promptBox.querySelector('span');
-    promptMessage.innerText = message;
+    var promptMessage = promptBox.querySelector('.prompt-title');
+    console.log(message);
+    promptMessage.innerText = message ? message : '';
     var form = promptBox.querySelector('form');
     form.onsubmit = function () {
       promptBox.style.display = 'none';
@@ -189,6 +192,8 @@ class UIHandler {
     }.bind(this);
   }
 }
+
+document.querySelector('html').className += 'is-' + os.platform();
 
 ipcRenderer.on('message', function (event, message) {
   alert(message, 'BitCrypt');
