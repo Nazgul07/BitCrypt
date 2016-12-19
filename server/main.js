@@ -11,13 +11,13 @@ let iconPath = rootPath + '/client/images/icons';
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    height: 245,
+    height: os.platform() == 'win32' ? 265 : 245,
     resizable: false,
     maximizable: false,
     width: 400,
-    transparent: os.platform == 'win32' ? true : false,
-    icon: os.platform == 'win32' ? iconPath + '/BitCrypt.ico' : iconPath + '/BitCrypt.png',
-    titleBarStyle: os.platform == 'win32' ? 'default' : 'hidden',
+    transparent: os.platform() == 'win32' ? true : false,
+    icon: os.platform() == 'win32' ? iconPath + '/BitCrypt.ico' : iconPath + '/BitCrypt.png',
+    titleBarStyle: os.platform() == 'win32' ? 'default' : 'hidden',
   });
 
   win.webContents.on('will-navigate', function (event) {
