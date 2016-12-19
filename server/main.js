@@ -1,22 +1,22 @@
-const electron = require('electron');
+const {app, BrowserWindow, ipcMain} = require('electron');
 const os = require('os');
-// Module to control application life.
-const {app} = electron;
-// Module to create native browser window.
-const {BrowserWindow} = electron;
-const {ipcMain} = electron;
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+const path = require('path');
+const fs = require('fs');
+const crypto = require('crypto');
+const rootPath = path.dirname(__dirname);
+
 let win;
+let iconPath = rootPath + '/client/images/icons';
 
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     height: 245,
     resizable: false,
+    maximizable: false,
     width: 400,
     transparent: os.platform == 'win32' ? true : false,
-    icon: __dirname + '/../client/images/UnLock-Dark.png',
+    icon: os.platform == 'win32' ? iconPath + '/BitCrypt.ico' : iconPath + '/BitCrypt.png',
     titleBarStyle: os.platform == 'win32' ? 'default' : 'hidden',
   });
 
@@ -26,7 +26,7 @@ function createWindow() {
 
   win.setMenu(null);
   // and load the index.html of the app.
-  win.loadURL('file://' + __dirname + '/../client/index.html');
+  win.loadURL('file://' + rootPath + '/client/index.html');
 
   // Open the DevTools.
   //win.webContents.openDevTools();
@@ -59,13 +59,6 @@ app.on('activate', () => {
 });
 
 
-
-
-
-
-
-const fs = require('fs'),
-  crypto = require('crypto');
 
 var finishedCount = 0;
 var fileCount = 0;
