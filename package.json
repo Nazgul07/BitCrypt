@@ -1,6 +1,32 @@
 {
   "name": "bitcrypt",
+  "description": "A simple File Encryption application for Windows and Mac. Encrypt your bits.",
   "version": "0.0.3",
+  "author": "Colton Correll",
+  "contributors": [
+    {
+      "name": "Colton Correll",
+      "url": "https://www.coltoncorrell.com/"
+    },
+    {
+      "name": "Wohlschlegel Jérôme",
+      "email": "jerome.wohlschlegel@gmail.com",
+      "url": "https://w-jerome.fr/"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nazgul07/BitCrypt"
+  },
+  "bugs": {
+    "url": "https://github.com/Nazgul07/BitCrypt/issues"
+  },
+  "license": "MIT",
+  "keywords": [
+    "bitcrypt",
+    "encryption",
+    "file"
+  ],
   "main": "server/main.js",
   "devDependencies": {
     "electron": "^1.4.12"
