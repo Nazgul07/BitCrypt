@@ -2,7 +2,7 @@
   "name": "bitcrypt",
   "description": "A simple File Encryption application for Windows and Mac. Encrypt your bits.",
   "version": "0.0.3",
-  "author": "Colton Correll",
+  "author": "Colton Correll <nazgul07@example.com>",
   "contributors": [
     {
       "name": "Colton Correll",
@@ -29,9 +29,26 @@
   ],
   "main": "server/main.js",
   "devDependencies": {
-    "electron": "^1.4.12"
+    "electron": "^1.4.12",
+    "electron-builder": "^10.9.2"
   },
+  "postinstall": "install-app-deps",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "build --dir",
+    "pack:windows": "build --windows --x64",
+    "pack:mac": "build --mac --x64",
+    "pack:linux": "build --linux --x64",
+    "dist": "build",
+    "dist:all": "rm -rf ./dist/ && npm run pack:windows && npm run pack:mac && npm run pack:linux"
+  },
+  "build": {
+    "appId": "com.nazgul07.bitcrypt",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "win": {
+      "iconUrl": "https://raw.githubusercontent.com/Nazgul07/BitCrypt/master/client/images/BitCrypt.ico"
+    }
   }
 }
