@@ -12,7 +12,7 @@ npm install
 npm start
 ```
 
-## Build
+## Build on Mac
 ```
 npm run build  // build unpacked dir. Useful to test
 npm run pack:windows // build for Windows
@@ -23,3 +23,10 @@ npm run dist:all  // build for Windows, Mac and Linux
 [Build Multi-Platform](https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build)
 
 [electron-builder Documentation](https://www.npmjs.com/package/electron-builder)
+
+## Build on Windows
+```
+python script\bootstrap.py -v
+python script\build.py
+```
+[Build Instructions by Electron](http://electron.atom.io/docs/development/build-instructions-windows)
