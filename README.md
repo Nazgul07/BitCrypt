@@ -21,4 +21,5 @@ npm run pack:linux  // build for Linux
 npm run dist:all  // build for Windows, Mac and Linux
 ```
 [Build Multi-Platform](https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build)
+
 [electron-builder Documentation](https://www.npmjs.com/package/electron-builder)
