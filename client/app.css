@@ -13,7 +13,8 @@ html, body{
   color:#8a8a8a;
   cursor: default !important;
 }
-body{
+.is-darwin body, 
+.is-mac body {
   padding-top: 27px;
 }
 .is-darwin .title-bar, 
@@ -55,7 +56,7 @@ drop-zone {
   cursor: pointer !important;
 }
 drop-zone:not(:first-child) {
-  margin-left: 10px;
+  margin-left: auto;
 }
 drop-zone:hover, .dragging{
   border: dashed 3px #848484;
