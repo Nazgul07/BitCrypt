@@ -1,10 +1,10 @@
 # BitCrypt
-A simple File Encryption application for Windows. Encrypt your bits.
+A simple File Encryption application for Windows (Mac in development). Encrypt your bits.
 
 ![alt text](https://raw.githubusercontent.com/Nazgul07/BitCrypt/master/Screenshot.PNG "ScreenShot")
-###[Download](https://github.com/Nazgul07/BitCrypt/releases)
+###[Download for Windows](https://github.com/Nazgul07/BitCrypt/releases)
 
-## Developpement install and launch
+## Development install and launch
 ```
 git clone https://github.com/Nazgul07/BitCrypt.git
 cd BitCrypt
@@ -30,3 +30,4 @@ python script\bootstrap.py -v
 python script\build.py
 ```
 [Build Instructions by Electron](http://electron.atom.io/docs/development/build-instructions-windows)
+
