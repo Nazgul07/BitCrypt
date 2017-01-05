@@ -2,7 +2,7 @@
 A simple File Encryption application for Windows. Encrypt your bits.
 
 ![alt text](https://raw.githubusercontent.com/Nazgul07/BitCrypt/master/Screenshot.PNG "ScreenShot")
-###[Download for Windows](https://github.com/Nazgul07/BitCrypt/releases)
+###[Download](https://github.com/Nazgul07/BitCrypt/releases)
 
 ## Development install and launch
 ```
