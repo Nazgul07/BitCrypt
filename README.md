@@ -1,5 +1,5 @@
 # BitCrypt
-A simple File Encryption application for Windows (Mac in development). Encrypt your bits.
+A simple File Encryption application for Windows. Encrypt your bits.
 
 ![alt text](https://raw.githubusercontent.com/Nazgul07/BitCrypt/master/Screenshot.PNG "ScreenShot")
 ###[Download for Windows](https://github.com/Nazgul07/BitCrypt/releases)
