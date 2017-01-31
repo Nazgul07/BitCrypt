@@ -38,7 +38,7 @@
     "pack": "build --dir",
     "pack:windows": "build --windows --x64",
     "pack:mac": "build --mac --x64",
-    "pack:linux": "build --linux --x64",
+    "pack:linux": "build --linux deb zip --x64",
     "dist": "build",
     "dist:all": "rm -rf ./dist/ && npm run pack:windows && npm run pack:mac && npm run pack:linux"
   },
