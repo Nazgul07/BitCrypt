@@ -1,6 +1,8 @@
 # BitCrypt
 A simple cross-platform File Encryption application. Encrypt your bits.
 
+Uses AES256 with CBC mode.
+
 ![alt text](https://raw.githubusercontent.com/Nazgul07/BitCrypt/master/Screenshot.PNG "ScreenShot")
 ###[Download](https://github.com/Nazgul07/BitCrypt/releases)
 
