@@ -3,10 +3,12 @@ const os = require('os');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
+const express = require('express');
 const rootPath = path.dirname(__dirname);
 
 let win;
 let iconPath = rootPath + '/client/images/icons';
+let filedir = rootPath + `/files/`
 
 function createWindow() {
   // Create the browser window.
@@ -40,10 +42,33 @@ function createWindow() {
   });
 }
 
+function createServer() {
+  //New express app
+  var app = express();
+  app.listen(3000, () => console.log(`App listening on port 3000!`))
+  if (!fs.existsSync(filedir)){
+    fs.mkdirSync(filedir);
+  }
+
+  app.get('/f/:filename', function(req, res) {
+    var filename = req.params.filename
+    res.download(filedir + filename, filename, function (err) {
+      if (err) {
+        console.error(err)
+      } else {
+        fs.unlinkSync(filedir + filename)
+      }
+    })
+  })
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', () => {
+  createWindow();
+  createServer();
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -57,8 +82,6 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-
 
 var finishedCount = 0;
 var fileCount = 0;
@@ -80,7 +103,7 @@ ipcMain.on('supply-lock-password', function (event, password, passwordHint) {
 function lock(files, event) {
   while (files.length > 0) {
     var file = files.pop();
-    var destination = file.path + '.bc';
+    var destination = filedir + path.basename(file.path) + '.bc';
     if (file.name.endsWith('.bc')) {
       files.push(file);
       break;
@@ -101,20 +124,22 @@ function lock(files, event) {
       headerCipher = crypto.createCipher('aes-256-cbc', 'headerKey'),
       input = fs.createReadStream(file.path),
       output = fs.createWriteStream(destination);
+      
     output.write(headerCipher.update(lockPasswordHint, 'utf8', 'binary') + headerCipher.final('binary') + '\n\n');
     output.write(passwordCipher.update(lockPasswordHint, 'utf8', 'binary') + passwordCipher.final('binary') + '\n\n');
     input.pipe(cipher).pipe(output);
+    event.sender.send('file-path', destination);
 
     var progressShown = false;
     input.on('data', function (){
-        if(!progressShown){
-          progressShown = true;
-          event.sender.send('show-progress');
-        }
+      if(!progressShown){
+        progressShown = true;
+        event.sender.send('show-progress');
+      }
     });
     output.on('finish', function () {
       if(deleteWhenDone){
-         fs.unlink(file.path);
+        fs.unlink(file.path);
       }
       event.sender.send('progress-update', ++finishedCount / fileCount);
     });
