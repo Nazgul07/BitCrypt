@@ -50,5 +50,9 @@
     "win": {
       "iconUrl": "https://raw.githubusercontent.com/Nazgul07/BitCrypt/master/client/images/BitCrypt.ico"
     }
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "ip": "^1.1.5"
   }
 }

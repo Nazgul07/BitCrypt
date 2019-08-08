@@ -1,8 +1,7 @@
-const {ipcRenderer} = require('electron');
+const {remote, clipboard, ipcRenderer} = require('electron');
 const os = require('os');
-const FileSystem = require('fs');
-const remote = require('electron').remote
 const Path = require('path');
+const ip = require("ip");
 
 var uiHandler;
 
@@ -10,6 +9,7 @@ class UIHandler {
   constructor() {
     this.progressBar = document.querySelector('.progress-bar');
     this.progress = document.querySelector('.progress-bar span');
+    this.filelinks = document.querySelector('.filelinks');
 
     this.LockDrop = document.querySelector('#lock-zone');
     this.LockDrop.ondragover = this.dragStart.bind(this);
@@ -62,6 +62,7 @@ class UIHandler {
   onLockDrop(event) {
     event.preventDefault();
     event.stopPropagation();
+    uiHandler.filelinks.innerHTML = ``
 
     event.target.classList.remove('dragging');
 
@@ -224,6 +225,17 @@ ipcRenderer.on('progress-update', function (event, value) {
     setTimeout(function () { uiHandler.progressBar.style.display = 'none'; }, 1000);
   }
 });
+
+ipcRenderer.on('file-path', function (event, value) {
+  newHtml = `<label class="filepath" onclick="copyClip('`+ value +`')">` + Path.basename(value) + ` Click to Copy Link</label>`
+  uiHandler.filelinks.innerHTML += newHtml
+});
+
+function copyClip(val) {
+  var address = `http://` + ip.address() + `:3000/f/` + Path.basename(val)
+  clipboard.writeText(address)
+  alert(`Copied to clipboard: ` + address)
+}
 
 ipcRenderer.on('confirm', function (event, message) {
   if(confirm(message, 'BitCrypt')){
